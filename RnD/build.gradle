@@ -1,0 +1,44 @@
+apply plugin: 'maven'
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'eclipse'
+
+    repositories {
+        maven { url 'http://gbrdsr000000749:8081/artifactory/repo' }
+        maven { url 'https://barcorpnexus.barcapint.com:8443/nexus/content/repositories/RBB_INT_GLF_RELEASE' }
+    }
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    idea{
+        module{
+            inheritOutputDirs = false
+            outputDir = compileJava.destinationDir
+            testOutputDir = compileTestJava.destinationDir
+        }
+    }
+}
+group = 'com.barclays.rndtest'
+
+configurations {
+    provided
+}
+
+sourceSets {
+    main.compileClasspath += configurations.provided
+    test.compileClasspath += configurations.provided
+    test.runtimeClasspath += configurations.provided
+}
+
+
+eclipse.classpath.plusConfigurations += configurations.provided
+
+dependencies{
+    testCompile 'junit:junit-dep:4.6'
+    testCompile ('org.mockito:mockito-core:1.9.5')
+    testCompile ('org.hamcrest:hamcrest-core:1.3')
+    testCompile ('org.hamcrest:hamcrest-library:1.3')
+}
